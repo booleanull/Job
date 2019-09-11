@@ -9,11 +9,12 @@ import io.reactivex.disposables.CompositeDisposable
 class JobSourceFactory(
     private val jobRepository: JobRepository,
     private val query: String,
+    private val foundLiveData: MutableLiveData<Boolean>,
     private val errorLiveData: MutableLiveData<Boolean>,
     private val composibleDisposable: CompositeDisposable
 ) : DataSource.Factory<Int, Job>() {
 
     override fun create(): DataSource<Int, Job> {
-        return JobSource(jobRepository, query, errorLiveData, composibleDisposable)
+        return JobSource(jobRepository, query, foundLiveData, errorLiveData, composibleDisposable)
     }
 }

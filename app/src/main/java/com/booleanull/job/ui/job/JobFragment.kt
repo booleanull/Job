@@ -96,8 +96,6 @@ class JobFragment : Fragment() {
         jobViewModel.getJobs(jobRepository, string).observe(this, Observer {
             jobAdapter.submitList(it)
             progress.visibility = View.GONE
-
-            jobViewModel.foundLiveData.value = it.isEmpty()
         })
     }
 

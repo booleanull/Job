@@ -14,6 +14,7 @@ import javax.inject.Inject
 class JobSource(
     private val jobRepository: JobRepository,
     private val query: String,
+    private val foundLiveData: MutableLiveData<Boolean>,
     private val errorLiveData: MutableLiveData<Boolean>,
     private val compositeDisposable: CompositeDisposable
 ) : PageKeyedDataSource<Int, Job>() {
@@ -30,6 +31,7 @@ class JobSource(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ response ->
                 callback.onResult(response, null, 1)
+                foundLiveData.value = response.isEmpty()
             }, { onError(it) })
         )
     }

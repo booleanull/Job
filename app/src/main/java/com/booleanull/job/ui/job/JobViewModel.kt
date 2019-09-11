@@ -27,7 +27,7 @@ class JobViewModel : ViewModel() {
     }
 
     fun getJobs(jobRepository: JobRepository, query: String): LiveData<PagedList<Job>> {
-        val factory = JobSourceFactory(jobRepository, query, errorLiveData, compositeDisposable)
+        val factory = JobSourceFactory(jobRepository, query, foundLiveData, errorLiveData, compositeDisposable)
         val config = PagedList.Config.Builder()
             .setPageSize(50)
             .setInitialLoadSizeHint(50)
