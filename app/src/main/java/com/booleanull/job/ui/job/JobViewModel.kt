@@ -9,23 +9,25 @@ import com.booleanull.job.MyApplication
 import com.booleanull.job.domain.JobRepository
 import com.booleanull.job.domain.JobSourceFactory
 import com.booleanull.job.domain.models.Job
+import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 class JobViewModel : ViewModel() {
 
-    @Inject
-    lateinit var jobRepository: JobRepository
-
-    private var liveData: LiveData<PagedList<Job>>? = null
+    var liveData: LiveData<PagedList<Job>>? = null
 
     val foundLiveData = MutableLiveData<Boolean>()
+
+    val errorLiveData = MutableLiveData<Boolean>()
+
+    private val compositeDisposable = CompositeDisposable()
 
     init {
         MyApplication.appComponent.inject(this)
     }
 
     fun getJobs(jobRepository: JobRepository, query: String): LiveData<PagedList<Job>> {
-        val factory = JobSourceFactory(jobRepository, query)
+        val factory = JobSourceFactory(jobRepository, query, errorLiveData, compositeDisposable)
         val config = PagedList.Config.Builder()
             .setPageSize(50)
             .setInitialLoadSizeHint(50)
@@ -37,5 +39,10 @@ class JobViewModel : ViewModel() {
             .build()
 
         return liveData as LiveData<PagedList<Job>>
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        compositeDisposable.clear()
     }
 }

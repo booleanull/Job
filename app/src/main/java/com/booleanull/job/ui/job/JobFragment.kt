@@ -2,16 +2,19 @@ package com.booleanull.job.ui.job
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.booleanull.job.MyApplication
 import com.booleanull.job.R
 import com.booleanull.job.domain.JobRepository
+import com.booleanull.job.domain.models.Job
 import com.booleanull.job.utils.Line
 import com.booleanull.job.utils.MyQueryTextListener
 import com.booleanull.job.utils.RecyclerDivider
@@ -63,10 +66,25 @@ class JobFragment : Fragment() {
         recycler.adapter = jobAdapter
 
         jobViewModel.foundLiveData.observe(this, Observer {
+            text_start.visibility = View.GONE
             if (!it) {
                 text_found.visibility = View.GONE
+                recycler.visibility = View.VISIBLE
             } else {
                 text_found.visibility = View.VISIBLE
+                recycler.visibility = View.GONE
+            }
+        })
+
+        jobAdapter.submitList(null)
+        jobViewModel.liveData?.observe(this, Observer {
+            jobAdapter.submitList(it)
+        })
+
+        jobViewModel.errorLiveData.observe(this, Observer {
+            if(it) {
+                Toast.makeText(context, getString(R.string.error), Toast.LENGTH_SHORT).show()
+                jobViewModel.errorLiveData.value = false
             }
         })
     }

@@ -11,7 +11,7 @@
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 tools:listitem="@layout/view_job">
 
         </androidx.recyclerview.widget.RecyclerView>
@@ -34,6 +34,16 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/large_text_size"
             android:text="@string/not_found"
+            android:textColor="@color/colorBlack"/>
+
+    <TextView
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:id="@+id/text_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/large_text_size"
+            android:text="@string/search"
             android:textColor="@color/colorBlack"/>
 
 </FrameLayout>

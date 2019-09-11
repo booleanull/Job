@@ -1,19 +1,11 @@
 package com.booleanull.job.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.appcompat.app.AppCompatActivity
 import com.booleanull.job.MyApplication
 import com.booleanull.job.R
-import com.booleanull.job.domain.JobRepository
 import com.booleanull.job.domain.models.Job
-import com.booleanull.job.ui.job.JobAdapter
-import com.booleanull.job.utils.Line
-import com.booleanull.job.utils.RecyclerDivider
+import com.booleanull.job.ui.job.JobFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.Router
@@ -43,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
 
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             cicerone.router.replaceScreen(Screens.JobScreen())
         }
     }

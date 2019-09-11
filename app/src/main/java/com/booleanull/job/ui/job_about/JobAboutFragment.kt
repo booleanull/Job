@@ -12,6 +12,7 @@ import com.booleanull.job.R
 import com.booleanull.job.domain.models.Job
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_about_job.*
 import org.jsoup.Jsoup
 
 class JobAboutFragment : Fragment() {

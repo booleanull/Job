@@ -3,4 +3,5 @@
     <string name="not_found">Поиск не дал результатов</string>
     <string name="error">Ошибка! Возможно у Вас проблемы с доступом в интернет.</string>
     <string name="jobs_github">Jobs GitHub</string>
+    <string name="search">Воспользуйтесь поиском</string>
 </resources>
