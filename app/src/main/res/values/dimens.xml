@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="large_text_size">18sp</dimen>
+    <dimen name="logo_size">48dp</dimen>
+    <dimen name="padding_layout">8dp</dimen>
+    <dimen name="size_logo">120dp</dimen>
+</resources>
