@@ -8,6 +8,7 @@ import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterF
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
@@ -28,15 +29,15 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun getCoroutineCallAdapterFactory(): CoroutineCallAdapterFactory {
-        return CoroutineCallAdapterFactory()
+    fun getCoroutineCallAdapterFactory(): RxJava2CallAdapterFactory {
+        return RxJava2CallAdapterFactory.create()
     }
 
     @Singleton
     @Provides
     fun getRetrofit(
         gsonConverterFactory: GsonConverterFactory,
-        coroutineCallAdapterFactory: CoroutineCallAdapterFactory
+        coroutineCallAdapterFactory: RxJava2CallAdapterFactory
     ): ApiService {
         val retrofit = Retrofit.Builder()
             .addConverterFactory(gsonConverterFactory)
