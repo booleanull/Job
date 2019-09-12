@@ -1,15 +1,10 @@
 package com.booleanull.job.domain
 
-import android.content.Context
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
-import com.booleanull.job.MyApplication
 import com.booleanull.job.domain.models.Job
-import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import javax.inject.Inject
 
 class JobSource(
     private val jobRepository: JobRepository,
@@ -23,40 +18,37 @@ class JobSource(
         errorLiveData.value = true
     }
 
-    override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, Job>) {
+    private fun loadData(onSuccess: (list: List<Job>) -> Unit) {
         compositeDisposable.add(jobRepository.provideJobs(query, 0)
             .doOnError {
                 onError(it)
             }
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ response ->
-                callback.onResult(response, null, 1)
-                foundLiveData.value = response.isEmpty()
+            .subscribe({ result ->
+                onSuccess(result)
             }, { onError(it) })
         )
+    }
+
+    override fun loadInitial(
+        params: LoadInitialParams<Int>,
+        callback: LoadInitialCallback<Int, Job>
+    ) {
+        loadData {
+            callback.onResult(it, null, 1)
+            foundLiveData.value = it.isEmpty()
+        }
     }
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Job>) {
-        compositeDisposable.add(jobRepository.provideJobs(query, params.key)
-            .doOnError {
-                onError(it)
-            }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ response ->
-                callback.onResult(response, params.key.inc())
-            }, { onError(it) })
-        )
+        loadData {
+            callback.onResult(it, params.key.inc())
+        }
     }
 
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Job>) {
-        compositeDisposable.add(jobRepository.provideJobs(query, params.key)
-            .doOnError {
-                onError(it)
-            }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ response ->
-                callback.onResult(response, params.key.dec())
-            }, { onError(it) })
-        )
+        loadData {
+            callback.onResult(it, params.key.dec())
+        }
     }
 }

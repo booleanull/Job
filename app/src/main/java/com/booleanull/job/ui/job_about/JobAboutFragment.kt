@@ -2,12 +2,15 @@ package com.booleanull.job.ui.job_about
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.transition.TransitionInflater
 import com.booleanull.job.R
 import com.booleanull.job.domain.models.Job
 import com.squareup.picasso.Picasso
@@ -27,9 +30,19 @@ class JobAboutFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val position = arguments?.get("position")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            image_logo.transitionName = "position$position"
+        }
         val job = arguments?.get("item") as Job
 
-        activity?.actionBar?.title = job.title
+        activity?.toolbar?.title = job.title
+        activity?.toolbar?.navigationIcon =
+            ContextCompat.getDrawable(context!!, R.drawable.ic_arrow_back_black_24dp)
+        activity?.toolbar?.setNavigationOnClickListener {
+            activity?.onBackPressed()
+        }
+
         text_company.text = job.company
         text_description.text = Jsoup.parse(job.description).text()
         text_created.text = job.created
@@ -52,13 +65,6 @@ class JobAboutFragment : Fragment() {
                 val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
                 startActivity(browserIntent)
             }
-        }
-
-        activity?.toolbar?.title = job.title
-        activity?.toolbar?.navigationIcon =
-            ContextCompat.getDrawable(context!!, R.drawable.ic_arrow_back_black_24dp)
-        activity?.toolbar?.setNavigationOnClickListener {
-            activity?.onBackPressed()
         }
     }
 }

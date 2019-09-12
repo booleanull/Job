@@ -8,13 +8,11 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.booleanull.job.MyApplication
 import com.booleanull.job.R
 import com.booleanull.job.domain.JobRepository
-import com.booleanull.job.domain.models.Job
 import com.booleanull.job.utils.Line
 import com.booleanull.job.utils.MyQueryTextListener
 import com.booleanull.job.utils.RecyclerDivider
@@ -54,6 +52,11 @@ class JobFragment : Fragment() {
         activity?.toolbar?.title = getString(R.string.app_name)
         activity?.toolbar?.navigationIcon = null
 
+        initAdapter()
+        initObservers()
+    }
+
+    private fun initAdapter() {
         jobAdapter = JobAdapter()
         recycler.setHasFixedSize(true)
         recycler.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
@@ -64,7 +67,9 @@ class JobFragment : Fragment() {
             )
         )
         recycler.adapter = jobAdapter
+    }
 
+    private fun initObservers() {
         jobViewModel.foundLiveData.observe(this, Observer {
             text_start.visibility = View.GONE
             if (!it) {
@@ -82,7 +87,7 @@ class JobFragment : Fragment() {
         })
 
         jobViewModel.errorLiveData.observe(this, Observer {
-            if(it) {
+            if (it) {
                 Toast.makeText(context, getString(R.string.error), Toast.LENGTH_SHORT).show()
                 jobViewModel.errorLiveData.value = false
             }

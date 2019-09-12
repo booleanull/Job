@@ -16,7 +16,7 @@ object Screens {
         }
     }
 
-    class JobAboutScreen(val job: Job) : SupportAppScreen() {
+    class JobAboutScreen(private val job: Job) : SupportAppScreen() {
 
         override fun getFragment(): Fragment {
             val fragment = JobAboutFragment()

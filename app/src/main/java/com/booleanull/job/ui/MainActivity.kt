@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.booleanull.job.MyApplication
 import com.booleanull.job.R
 import com.booleanull.job.domain.models.Job
-import com.booleanull.job.ui.job.JobFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.Router
